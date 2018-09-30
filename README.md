@@ -1,5 +1,7 @@
 # zsh iTerm Touchbar
 
+Forked from [iam4x/zsh-iterm-touchbar](https://github.com/iam4x/zsh-iterm-touchbar) and adjusted for personal use
+
 > Display feedback of terminal in the 🍏 Touchbar
 
 ![preview1](./preview1.jpg)
@@ -18,7 +20,6 @@ Currently it shows:
     * `⇣` — unpulled commits;
     * `⇡` — unpushed commits.
   * F4 - Push to origin branch (git push origin [branch]) ✉️
-  * F5 - Display `npm-run` or `yarn-run` scripts from `package.json` ⚡️ /🐱
 
 ### Requirements
 
@@ -76,12 +77,6 @@ GIT_UNTRACKED="?"
 GIT_STASHED="$"
 GIT_UNPULLED="⇣"
 GIT_UNPUSHED="⇡"
-```
-
-ENV variables to enable or disable yarn:
-
-```shell
-YARN_ENABLED=true
 ```
 
 ### Read more / Credits
