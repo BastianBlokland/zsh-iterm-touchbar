@@ -5,9 +5,6 @@ GIT_UNTRACKED="${GIT_UNTRACKED:-?}"
 GIT_STASHED="${GIT_STASHED:-$}"
 GIT_UNPULLED="${GIT_UNPULLED:-⇣}"
 GIT_UNPUSHED="${GIT_UNPUSHED:-⇡}"
-
-# YARN
-YARN_ENABLED=true
 TOUCHBAR_GIT_ENABLED=true
 
 # https://unix.stackexchange.com/a/22215
@@ -165,60 +162,6 @@ function _displayDefault() {
     clearKey 4
     clearKey 5
   fi
-
-  # PACKAGE.JSON
-  # ------------
-  if [[ $(find-up package.json) != "" ]]; then
-      if [[ $(find-up yarn.lock) != "" ]] && [[ "$YARN_ENABLED" = true ]]; then
-          setKey 6 "🐱 yarn-run" _displayYarnScripts '-q'
-      else
-          setKey 6 "⚡️ npm-run" _displayNpmScripts '-q'
-    fi
-  else
-      clearKey 6
-  fi
-}
-
-function _displayNpmScripts() {
-  # find available npm run scripts only if new directory
-  if [[ $lastPackageJsonPath != $(find-up package.json) ]]; then
-    lastPackageJsonPath=$(find-up package.json)
-    npmScripts=($(node -e "console.log(Object.keys($(npm run --json)).sort((a, b) => a.localeCompare(b)).filter((name, idx) => idx < 19).join(' '))"))
-  fi
-
-  _clearTouchbar
-  _unbindTouchbar
-
-  touchBarState='npm'
-
-  fnKeysIndex=1
-  for npmScript in "$npmScripts[@]"; do
-    fnKeysIndex=$((fnKeysIndex + 1))
-    setKey $fnKeysIndex $npmScript "npm run $npmScript"
-  done
-
-  setKey 1 "👈 back" _displayDefault '-q'
-}
-
-function _displayYarnScripts() {
-  # find available yarn run scripts only if new directory
-  if [[ $lastPackageJsonPath != $(find-up package.json) ]]; then
-    lastPackageJsonPath=$(find-up package.json)
-    yarnScripts=($(node -e "console.log([$(yarn run --json 2>>/dev/null | tr '\n' ',')].find(line => line && line.type === 'list' && line.data && line.data.type === 'possibleCommands').data.items.sort((a, b) => a.localeCompare(b)).filter((name, idx) => idx < 19).join(' '))"))
-  fi
-
-  _clearTouchbar
-  _unbindTouchbar
-
-  touchBarState='yarn'
-
-  fnKeysIndex=1
-  for yarnScript in "$yarnScripts[@]"; do
-    fnKeysIndex=$((fnKeysIndex + 1))
-    setKey $fnKeysIndex $yarnScript "yarn run $yarnScript"
-  done
-
-  setKey 1 "👈 back" _displayDefault '-q'
 }
 
 function _displayBranches() {
@@ -257,17 +200,11 @@ function _displayPath() {
 }
 
 zle -N _displayDefault
-zle -N _displayNpmScripts
-zle -N _displayYarnScripts
 zle -N _displayBranches
 zle -N _displayPath
 
 precmd_iterm_touchbar() {
-  if [[ $touchBarState == 'npm' ]]; then
-    _displayNpmScripts
-  elif [[ $touchBarState == 'yarn' ]]; then
-    _displayYarnScripts
-  elif [[ $touchBarState == 'github' ]]; then
+  if [[ $touchBarState == 'github' ]]; then
     _displayBranches
   elif [[ $touchBarState == 'path' ]]; then
     _displayPath
