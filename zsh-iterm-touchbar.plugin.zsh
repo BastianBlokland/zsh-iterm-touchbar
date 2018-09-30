@@ -157,12 +157,14 @@ function _displayDefault() {
     setKey 4 "🔼 push" "git push origin $(git_current_branch)"
     setKey 5 "🔽 pull" "git pull origin $(git_current_branch)"
     setKey 6 "📜 log" "git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --all"
+    setKey 7 "💣 reset" "git reset HEAD --hard & git clean -fd"
   else
     clearKey 2
     clearKey 3
     clearKey 4
     clearKey 5
     clearKey 6
+    clearKey 7
   fi
 }
 
