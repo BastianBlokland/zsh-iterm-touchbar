@@ -153,7 +153,7 @@ function _displayDefault() {
     [ -n "${indicators}" ] && touchbarIndicators="🔥[${indicators}]" || touchbarIndicators="🙌";
 
     setKey 2 "🎋 `git_current_branch`" _displayBranches '-q'
-    setKey 3 $touchbarIndicators "git status"
+    setKey 3 $touchbarIndicators "git status -sb"
     setKey 4 "🔼 push" "git push origin $(git_current_branch)"
     setKey 5 "🔽 pull" "git pull origin $(git_current_branch)"
     setKey 6 "📜 log" "git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --all"
